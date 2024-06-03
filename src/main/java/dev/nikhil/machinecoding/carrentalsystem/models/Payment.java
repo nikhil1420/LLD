@@ -1,0 +1,8 @@
+package dev.nikhil.machinecoding.carrentalsystem.models;
+
+public class Payment {
+    public void payBill(Bill bill) {
+        //do payment processing and update the bill status;
+    }
+
+}
