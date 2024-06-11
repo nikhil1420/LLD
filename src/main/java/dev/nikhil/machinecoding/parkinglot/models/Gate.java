@@ -1,10 +1,23 @@
 package dev.nikhil.machinecoding.parkinglot.models;
 
-public class Gate {
-    private int gateNumber;
+import dev.nikhil.machinecoding.parkinglot.enums.GateStatus;
+import dev.nikhil.machinecoding.parkinglot.enums.GateType;
+
+public class Gate extends BaseModel{
+    private int gateNumber; //101 Floor 1 gate no. 01
     private GateType gateType;
-    private Operator operator;
+    private String operator;
     private GateStatus gateStatus;
+
+    public Gate() {
+    }
+
+    public Gate(int gateNumber, GateType gateType, String operator, GateStatus gateStatus) {
+        this.gateNumber = gateNumber;
+        this.gateType = gateType;
+        this.operator = operator;
+        this.gateStatus = gateStatus;
+    }
 
     public int getGateNumber() {
         return gateNumber;
@@ -22,11 +35,11 @@ public class Gate {
         this.gateType = gateType;
     }
 
-    public Operator getOperator() {
+    public String getOperator() {
         return operator;
     }
 
-    public void setOperator(Operator operator) {
+    public void setOperator(String operator) {
         this.operator = operator;
     }
 

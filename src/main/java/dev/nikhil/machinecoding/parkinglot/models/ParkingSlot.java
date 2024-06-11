@@ -1,10 +1,26 @@
 package dev.nikhil.machinecoding.parkinglot.models;
 
+import dev.nikhil.machinecoding.parkinglot.enums.ParkingLotStatus;
+import dev.nikhil.machinecoding.parkinglot.enums.ParkingSpotStatus;
+import dev.nikhil.machinecoding.parkinglot.enums.VehicleType;
+
 public class ParkingSlot extends BaseModel {
     private VehicleType vehicleType;
-    private ParkingStatus parkingStatus;
+    private ParkingSpotStatus parkingSpotStatus;
     private int number;
-    private ParkingFloor floor;
+    //private ParkingFloor floor;
+    private Vehicle vehicle;
+
+    public ParkingSlot(VehicleType vehicleType, ParkingLotStatus parkingLotStatus, int number, Vehicle vehicle) {
+        this.vehicleType = vehicleType;
+        this.parkingSpotStatus = parkingSpotStatus;
+        this.number = number;
+        this.vehicle = vehicle;
+    }
+
+    public ParkingSlot(){
+
+    }
 
     public VehicleType getVehicleType() {
         return vehicleType;
@@ -14,12 +30,12 @@ public class ParkingSlot extends BaseModel {
         this.vehicleType = vehicleType;
     }
 
-    public ParkingStatus getParkingStatus() {
-        return parkingStatus;
+    public ParkingSpotStatus getParkingSpotStatus() {
+        return parkingSpotStatus;
     }
 
-    public void setParkingStatus(ParkingStatus parkingStatus) {
-        this.parkingStatus = parkingStatus;
+    public void setParkingSpotStatus(ParkingSpotStatus parkingSpotStatus) {
+        this.parkingSpotStatus = parkingSpotStatus;
     }
 
     public int getNumber() {
@@ -30,11 +46,11 @@ public class ParkingSlot extends BaseModel {
         this.number = number;
     }
 
-    public ParkingFloor getFloor() {
-        return floor;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public void setFloor(ParkingFloor floor) {
-        this.floor = floor;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 }

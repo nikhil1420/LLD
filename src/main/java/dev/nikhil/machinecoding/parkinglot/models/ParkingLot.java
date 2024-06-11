@@ -1,32 +1,59 @@
 package dev.nikhil.machinecoding.parkinglot.models;
 
-import dev.nikhil.machinecoding.parkinglot.strategy.BillingStrategy;
-import dev.nikhil.machinecoding.parkinglot.strategy.ParkingPlaceAllotmentStrategy;
+import dev.nikhil.machinecoding.parkinglot.enums.ParkingLotStatus;
+import dev.nikhil.machinecoding.parkinglot.enums.VehicleType;
+import dev.nikhil.machinecoding.parkinglot.strategy.BillingCalculationStrategy;
+import dev.nikhil.machinecoding.parkinglot.strategy.SlotAllocationStrategy;
 
 import java.util.List;
 
 public class ParkingLot extends BaseModel {
 
+    private String name;
+    private String address;
+    private int capacity;
     private List<ParkingFloor> parkingFloors;
-    private List<Gate> gates;
-    private ParkinngLotStatus parkinngLotStatus;
-    private ParkingPlaceAllotmentStrategy parkingPlaceAllomentStrategy;
-    private BillingStrategy billingStrategy;
+    private List<VehicleType> vehicleTypesSupported;
+    private ParkingLotStatus parkingLotStatus;
+    private SlotAllocationStrategy slotAllocationStrategy;
+    private BillingCalculationStrategy billingCalculationStrategy;
 
-    public ParkingPlaceAllotmentStrategy getParkingPlaceAllomentStrategy() {
-        return parkingPlaceAllomentStrategy;
+    public ParkingLot() {
     }
 
-    public void setParkingPlaceAllomentStrategy(ParkingPlaceAllotmentStrategy parkingPlaceAllomentStrategy) {
-        this.parkingPlaceAllomentStrategy = parkingPlaceAllomentStrategy;
+    public ParkingLot(String name, String address, int capacity, List<ParkingFloor> parkingFloors, List<VehicleType> vehicleTypesSupported, ParkingLotStatus parkingLotStatus, SlotAllocationStrategy slotAllocationStrategy, BillingCalculationStrategy billingCalculationStrategy) {
+        this.name = name;
+        this.address = address;
+        this.capacity = capacity;
+        this.parkingFloors = parkingFloors;
+        this.vehicleTypesSupported = vehicleTypesSupported;
+        this.parkingLotStatus = parkingLotStatus;
+        this.slotAllocationStrategy = slotAllocationStrategy;
+        this.billingCalculationStrategy = billingCalculationStrategy;
     }
 
-    public BillingStrategy getBillingStrategy() {
-        return billingStrategy;
+    public String getName() {
+        return name;
     }
 
-    public void setBillingStrategy(BillingStrategy billingStrategy) {
-        this.billingStrategy = billingStrategy;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public List<ParkingFloor> getParkingFloors() {
@@ -37,19 +64,35 @@ public class ParkingLot extends BaseModel {
         this.parkingFloors = parkingFloors;
     }
 
-    public List<Gate> getGates() {
-        return gates;
+    public List<VehicleType> getVehicleTypesSupported() {
+        return vehicleTypesSupported;
     }
 
-    public void setGates(List<Gate> gates) {
-        this.gates = gates;
+    public void setVehicleTypesSupported(List<VehicleType> vehicleTypesSupported) {
+        this.vehicleTypesSupported = vehicleTypesSupported;
     }
 
-    public ParkinngLotStatus getParkinngLotStatus() {
-        return parkinngLotStatus;
+    public ParkingLotStatus getParkingLotStatus() {
+        return parkingLotStatus;
     }
 
-    public void setParkinngLotStatus(ParkinngLotStatus parkinngLotStatus) {
-        this.parkinngLotStatus = parkinngLotStatus;
+    public void setParkingLotStatus(ParkingLotStatus parkingLotStatus) {
+        this.parkingLotStatus = parkingLotStatus;
+    }
+
+    public SlotAllocationStrategy getSlotAllocationStrategy() {
+        return slotAllocationStrategy;
+    }
+
+    public void setSlotAllocationStrategy(SlotAllocationStrategy slotAllocationStrategy) {
+        this.slotAllocationStrategy = slotAllocationStrategy;
+    }
+
+    public BillingCalculationStrategy getBillingCalculationStrategy() {
+        return billingCalculationStrategy;
+    }
+
+    public void setBillingCalculationStrategy(BillingCalculationStrategy billingCalculationStrategy) {
+        this.billingCalculationStrategy = billingCalculationStrategy;
     }
 }

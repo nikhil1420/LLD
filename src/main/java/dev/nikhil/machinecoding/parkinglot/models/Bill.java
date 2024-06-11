@@ -1,21 +1,26 @@
 package dev.nikhil.machinecoding.parkinglot.models;
 
-import dev.nikhil.machinecoding.parkinglot.strategy.BillingStrategy;
+import dev.nikhil.machinecoding.parkinglot.enums.BillStatus;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class Bill extends BaseModel {
     private LocalDateTime exitTime;
-    private  Ticket ticket;
+    private Ticket ticket;
     private Float billAmount;
-    private BillingStatus billingStatus;
-    private List<Payment> payments;
-    private Gate gate;
-    private Operator operator;
+    private BillStatus billStatus;
+    private Gate exitGate;
 
-    private BillingStrategy billingStrategy;
+    public Bill() {
+    }
 
+    public Bill(LocalDateTime exitTime, Ticket ticket, Float billAmount, BillStatus billStatus, Gate exitGate) {
+        this.exitTime = exitTime;
+        this.ticket = ticket;
+        this.billAmount = billAmount;
+        this.billStatus = billStatus;
+        this.exitGate = exitGate;
+    }
 
     public LocalDateTime getExitTime() {
         return exitTime;
@@ -41,35 +46,21 @@ public class Bill extends BaseModel {
         this.billAmount = billAmount;
     }
 
-    public BillingStatus getBillingStatus() {
-        return billingStatus;
+    public BillStatus getBillStatus() {
+        return billStatus;
     }
 
-    public void setBillingStatus(BillingStatus billingStatus) {
-        this.billingStatus = billingStatus;
+    public void setBillStatus(BillStatus billStatus) {
+        this.billStatus = billStatus;
     }
 
-    public List<Payment> getPayments() {
-        return payments;
+    public Gate getExitGate() {
+        return exitGate;
     }
 
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
+    public void setExitGate(Gate exitGate) {
+        this.exitGate = exitGate;
     }
 
-    public Gate getGate() {
-        return gate;
-    }
 
-    public void setGate(Gate gate) {
-        this.gate = gate;
-    }
-
-    public Operator getOperator() {
-        return operator;
-    }
-
-    public void setOperator(Operator operator) {
-        this.operator = operator;
-    }
 }

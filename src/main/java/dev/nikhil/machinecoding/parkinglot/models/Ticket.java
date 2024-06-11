@@ -5,11 +5,21 @@ import java.util.Date;
 
 public class Ticket extends BaseModel{
     private String number;
-    private Date dateTime;
+    private LocalDateTime entryTime;
     private Vehicle vehicle;
     private ParkingSlot parkingSlot;
     private Gate entryGate;
-    private Operator operator;
+
+    public Ticket() {
+    }
+
+    public Ticket(String number, LocalDateTime dateTime, Vehicle vehicle, ParkingSlot parkingSlot, Gate entryGate) {
+        this.number = number;
+        this.entryTime = dateTime;
+        this.vehicle = vehicle;
+        this.parkingSlot = parkingSlot;
+        this.entryGate = entryGate;
+    }
 
     public String getNumber() {
         return number;
@@ -19,12 +29,12 @@ public class Ticket extends BaseModel{
         this.number = number;
     }
 
-    public Date getDateTime() {
-        return dateTime;
+    public LocalDateTime getEntryTime() {
+        return entryTime;
     }
 
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
+    public void setEntryTime(LocalDateTime dateTime) {
+        this.entryTime = dateTime;
     }
 
     public Vehicle getVehicle() {
@@ -49,13 +59,5 @@ public class Ticket extends BaseModel{
 
     public void setEntryGate(Gate entryGate) {
         this.entryGate = entryGate;
-    }
-
-    public Operator getOperator() {
-        return operator;
-    }
-
-    public void setOperator(Operator operator) {
-        this.operator = operator;
     }
 }

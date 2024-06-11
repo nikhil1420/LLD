@@ -1,9 +1,14 @@
 package dev.nikhil.machinecoding.parkinglot.models;
 
+import dev.nikhil.machinecoding.parkinglot.enums.VehicleType;
+
 public class Vehicle extends BaseModel {
     private String vehicleNumber;
     private VehicleType vehicleType;
     private String ownerName;
+
+    public Vehicle() {
+    }
 
     public Vehicle(VehicleType vehicleType, String vehicleNumber, String ownerName) {
         this.vehicleType = vehicleType;

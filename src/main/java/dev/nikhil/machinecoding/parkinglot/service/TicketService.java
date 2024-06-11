@@ -1,60 +1,45 @@
 package dev.nikhil.machinecoding.parkinglot.service;
 
-import dev.nikhil.machinecoding.parkinglot.dtos.IssueTicketRequest;
-import dev.nikhil.machinecoding.parkinglot.models.*;
-import dev.nikhil.machinecoding.parkinglot.repositories.GateRepository;
-import dev.nikhil.machinecoding.parkinglot.repositories.ParkingLotRepository;
-import dev.nikhil.machinecoding.parkinglot.repositories.TicketRepository;
-import dev.nikhil.machinecoding.parkinglot.repositories.VehicleRepository;
-import dev.nikhil.machinecoding.parkinglot.strategy.ParkingPlaceAllotmentStrategy;
-import dev.nikhil.machinecoding.parkinglot.strategy.ParkingSlotAllotmentStrategyFactory;
+import dev.nikhil.machinecoding.parkinglot.enums.ParkingSpotStatus;
+import dev.nikhil.machinecoding.parkinglot.exception.ParkingSlotNotFoundException;
+import dev.nikhil.machinecoding.parkinglot.models.ParkingLot;
+import dev.nikhil.machinecoding.parkinglot.models.ParkingSlot;
+import dev.nikhil.machinecoding.parkinglot.models.Ticket;
+import dev.nikhil.machinecoding.parkinglot.models.Vehicle;
+import dev.nikhil.machinecoding.parkinglot.repositories.*;
+import dev.nikhil.machinecoding.parkinglot.strategy.SlotAllocationStrategy;
+import dev.nikhil.machinecoding.parkinglot.strategy.SpotAllocationStrategyFactory;
 
-import java.util.Date;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 public class TicketService {
 
-    private GateRepository gateRepository;
-    private VehicleRepository vehicleRepository;
-    private ParkingLotRepository parkingLotRepository;
     private TicketRepository ticketRepository;
+    private ParkingLotRepository parkingLotRepository;
+    private GateRepository gateRepository;
+    private ParkingSpotRepository parkingSpotRepository;
 
-    public TicketService(GateRepository gateRepository, VehicleRepository vehicleRepository, ParkingLotRepository parkingLotRepository, TicketRepository ticketRepository) {
-        this.gateRepository = gateRepository;
-        this.vehicleRepository = vehicleRepository;
-        this.parkingLotRepository = parkingLotRepository;
+    public TicketService(TicketRepository ticketRepository, ParkingLotRepository parkingLotRepository, GateRepository gateRepository, ParkingSpotRepository parkingSpotRepository) {
         this.ticketRepository = ticketRepository;
+        this.parkingLotRepository = parkingLotRepository;
+        this.gateRepository = gateRepository;
+        this.parkingSpotRepository = parkingSpotRepository;
     }
 
-    public Ticket issueTicket(IssueTicketRequest issueTicketRequest) {
+    public Ticket generateTicket(Vehicle vehicle, int gateId, int parkingLotId) throws ParkingSlotNotFoundException {
+        SlotAllocationStrategy strategy = SpotAllocationStrategyFactory.getSpotAllocationStrategy();
+        ParkingLot parkingLot = parkingLotRepository.get(parkingLotId);
+
+        ParkingSlot allocatedSpot = strategy.getSlotForVehicle(parkingLot, vehicle);
+        allocatedSpot.setParkingSpotStatus(ParkingSpotStatus.OCCUPIED);
+        allocatedSpot.setVehicle(vehicle);
+        parkingSpotRepository.put(allocatedSpot);
+
         Ticket ticket = new Ticket();
-        ticket.setDateTime(new Date());
-
-        //get gate details
-        Gate gate = gateRepository.findGateById(issueTicketRequest.getGateId());
-        ticket.setEntryGate(gate);
-
-        Vehicle vehicle = vehicleRepository.getVehicleById(issueTicketRequest.getVehicleNumber());
-        if(vehicle == null) {
-           vehicle = new Vehicle(issueTicketRequest.getVehicleType() , issueTicketRequest.getVehicleNumber(),
-                    issueTicketRequest.getOwnerName());
-           vehicleRepository.save(vehicle);
-        }
-
+        ticket.setEntryTime(LocalDateTime.now());
         ticket.setVehicle(vehicle);
-
-        //get ParkingLot
-        ParkingLot parkingLot = parkingLotRepository.getParkingLotById(issueTicketRequest.getParkingLotId());
-        ParkingPlaceAllotmentStrategy parkingPlaceAllotmentStrategy = parkingLot.getParkingPlaceAllomentStrategy();
-        ParkingPlaceAllotmentStrategy parkingSlotAllotmentRule =
-                ParkingSlotAllotmentStrategyFactory.getParkingSlotAllotmentStrategyForType(parkingPlaceAllotmentStrategy);
-         ParkingSlot parkingSlot = parkingSlotAllotmentRule.getParkingSlot(issueTicketRequest.getVehicleType(), issueTicketRequest.getParkingLotId());
-        ticket.setParkingSlot(parkingSlot);
-
-        // Ticket Number
-        ticket.setNumber(issueTicketRequest.getOwnerName() + UUID.randomUUID());
-        ticketRepository.save(ticket);
-
-        return ticket;
+        ticket.setParkingSlot(allocatedSpot);
+        ticket.setEntryGate(gateRepository.get(gateId));
+        return ticketRepository.put(ticket);
     }
 }
